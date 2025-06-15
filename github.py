@@ -7,14 +7,14 @@ from pathlib import Path
 # from playwright.async_api import async_playwright
 from patchright.async_api import async_playwright
 # from patchright.patchright import Patchright
-from browserforge.fingerprints import FingerprintGenerator
+from browserforge.fingerprints import FingerprintGenerator, Screen
 from browserforge.injectors.playwright import AsyncNewContext
 # from browserforge import BrowserForge
 # from browserforge.fingerprints import generate_fingerprint
 
-USER_DATA_DIR = "./user_profiles"
-EXT_DIR = "./extensions"
-PROFILES_PKL = "profiles.pkl"
+USER_DATA_DIR = "/media/disk/main_480/0xSCRIPT/sh_web3/Playwright/user_data/github"
+EXT_DIR = "/media/disk/main_480/0xSCRIPT/sh_web3/Playwright/EXT_DIR"
+PROFILES_PKL = os.path.join(USER_DATA_DIR, "github_profiles.pkl")
 
 CHROME_VERSIONS = [str(v) for v in range(120, 138)]
 WEBGL_VENDORS = [
@@ -63,6 +63,7 @@ async def create_profile(profile_id):
 
     user_agent = f"Mozilla/5.0 (X11; {random.choice(PLATFORMS)}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{random.choice(CHROME_VERSIONS)}.0.0.0 Safari/537.36"
     screen_width, screen_height = random.choice(SCREEN_RESOLUTIONS)
+    screen = Screen(width=screen_width, height=screen_height)
     timezone = random.choice(TIMEZONES)
     accept_language = random.choice(ACCEPT_LANGUAGES)
     geolocation = {
@@ -82,7 +83,7 @@ async def create_profile(profile_id):
         os='linux',
         browser='chrome',
         userAgent=user_agent,
-        screen={'width': screen_width, 'height': screen_height},
+        screen=screen,
         language=accept_language,
         timezone=timezone,
         webglVendor=webgl_vendor,
